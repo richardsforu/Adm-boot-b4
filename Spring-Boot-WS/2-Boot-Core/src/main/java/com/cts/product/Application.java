@@ -13,6 +13,7 @@ public class Application {
 
 		ApplicationContext ac= SpringApplication.run(Application.class,args);
 		C1 c1Obj = ac.getBean(C1.class);
+		
 		c1Obj.f1();
 	}
 
