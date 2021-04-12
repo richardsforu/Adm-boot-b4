@@ -1,0 +1,27 @@
+Spring core hands on
+-------------------------
+1. Create a class Flight with following properties
+    flightId
+    flightNumber
+    origin
+    destination
+    flightDate
+    flightTime
+    duration
+
+2. Create a class FlightFare with following propeties:
+    fareId
+    currency
+    flightFare
+
+3. Create a class Inventory with following properties
+    inventoryId
+    int availableSeats
+
+==============================================================================
+
+1. Add 5 flights to the collection object by autowiring Fare and Inventory classes in Flight
+2. Filter Flight data by FlightFare
+3. Filter Flight data by flightDate
+
+------------------------------------------------------------------------------

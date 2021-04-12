@@ -41,6 +41,7 @@ public interface FlightDao extends JpaRepository<Flight, Integer>{
 	
 	
 	// Custom Queries in Data JPA
+	
 	@Query(value = "from Flight f where f.origin =:origin")
 	List<Flight> getOriginFlights(String origin);
 	
