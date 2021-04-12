@@ -1,5 +1,6 @@
 package com.cts.flight.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,7 +18,7 @@ public class FlightInfo {
 	private int seatCapacity;
 	
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="airlineId")
 	private AirlineInfo airlineInfo;
 
