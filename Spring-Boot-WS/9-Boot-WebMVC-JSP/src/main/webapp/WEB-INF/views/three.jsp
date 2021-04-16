@@ -26,7 +26,7 @@
 			<th>Description</th>
 		</tr>
 
-		<c:forEach var="prod" items="${productList}">
+		<c:forEach var="prod" items="${requestScope.productList}">
 			<tr>
 				<td>${prod.id}</td>
 				<td>${prod.name}</td>

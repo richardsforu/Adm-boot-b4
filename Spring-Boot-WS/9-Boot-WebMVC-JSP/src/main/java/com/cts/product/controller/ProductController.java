@@ -3,15 +3,19 @@ package com.cts.product.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cts.product.model.Product;
 
 @Controller
+@Scope("request")
+@SessionAttributes(value = {"s1"})
 public class ProductController {
 
 	// without view and model
@@ -80,8 +84,8 @@ public class ProductController {
 
 		
 		mp.addAttribute(p1); // type of productObject is Product class
-		mp.addAttribute(products); // productList
-		
+		mp.addAttribute(products); // productList -> request
+		mp.addAttribute("s1",products); // session
 		
 		
 		return "three";
