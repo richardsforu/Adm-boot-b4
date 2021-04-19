@@ -19,14 +19,19 @@
 				<th>Name</th>
 				<th>Price</th>
 				<th>Description</th>
+				<th>Action1</th>
+				<th>Action2</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="prod: ${products}">
+			<tr th:each="prod: ${products}" th:object=${prod}>
 				<td th:text="${prod.id}"></td>
 				<td th:text="${prod.name}"></td>
 				<td th:text="${prod.price}"></td>
 				<td th:text="${prod.description}"></td>
+				<td><a th:href="@{/findProduct(id=${prod.id},type=update)}">Update</a></td>
+				<td><a th:href="@{/findProduct(id=${prod.id},type=delete)}">Remove</a></td>
+				
 			</tr>
 		</tbody>
 	</table>
