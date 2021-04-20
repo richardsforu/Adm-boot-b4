@@ -1,0 +1,44 @@
+In web services there are 2 architectural styles:
+	1) soap style
+	2) rest style
+-----------------------------------------
+If our project requirement is to represent same data but in diff formats such as xml, json, html, etc then go for REST style.
+In REST style, message layer security is not possible rather only transport layer security using https is possible.
+In SOAP style, we can provide security both at message layer security as well as transport layer. 
+Hence if our project requirement is more robustness then go for SOAP style.
+---------------------------------------
+
+The following APIs are used to develop SOAP based applications:
+	1) AXIS2 API
+	2) JAX-RPC API
+	3) JAX-WS  API
+	4) Apache CXF Framework [Preferred]
+
+Responsibilities:
+1) Developed services using Apache CXF framework.
+2) Configured services as beans in spring configuration file using DI.
+3) Tested services using SOAP UI.
+...
+----------------
+
+The following APIs are used to develop REST based applications:
+	1) JAX-RS API
+	2) SPRING with REST API [Preferred]
+	3) JAX-WS  API
+	4) Apache CXF Framework
+
+Responsibilities:
+1) Developed resources using SPRING with REST.
+2) Configured resources as beans in spring configuration file using DI.
+3) Tested resources using POSTMAN plug-in / SOAP UI.
+4) Consumed resources using RestTemplate.
+
+
+
+
+
+
+
+
+
+

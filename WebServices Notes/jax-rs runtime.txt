@@ -1,0 +1,9 @@
+Jax-rs runtime env does following:
+1) Receives HTTP request message
+2) Extract xml message from above http req message
+3) Delegates to jaxb and passes above xml message
+4) Wait for object from jaxb
+5) Invokes resource method & passes above object as an argument.
+6) If required, Response object internally created.
+7) The above Response object is converted to HTTP response message & sends back to client application.
+

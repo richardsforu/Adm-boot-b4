@@ -1,0 +1,217 @@
+The XML Schema defines:
+	1) XML elements
+	2) XML Data types
+
+The dataflow in web services:
+object--serialized to--> XML message --added to--> <soap:Body> --becomes payload of--> HTTP Request message
+
+AXIS2 delegates (de)serialization to ADB.
+JAX-RPC defines its own (de)serialization.
+JAX-WS delegates (Un)marshaling to JAXB.
+JAX-RS delegates (Un)marshaling to JAXB.
+SPRING with REST delegates (Un)marshaling to JAXB.
+Apache CXF framework delegates (Un)marshaling to JAXB.
+
+Top-down
+--------
+starts with wsdl and generates .java using 'wsdl2java' tool.
+
+Bottom-up
+---------
+starts with Endpiont Interface (and its impl class) and generates .wsdl using 'java2wsdl' tool.
+
+WS Technologies
+	XSD
+	SOAP
+	WSDL
+	HTTP
+	UDDI
+
+WS APIs & Frameworks
+	AXIS2 API
+	JAX-RPC API
+	JAX-WS  API
+	JAX-RS API
+	SPRING with REST API
+	Apache CXF Framework
+
+Messaging styles
+	document
+	rpc
+
+Encoding styles
+	soap encoding
+	literal encoding
+
+WSDL styles
+	document/literal
+	rpc/literal
+
+Architectural styles
+	soap style
+	rest style
+
+soap style (soap binding)
+----------
+The dataflow in soap style is:
+	obj-->xml message--> <soap:Body> --> http req msg
+
+The following APIs support soap style:
+	AXIS2, JAX-RPC, JAX-WS, Apache CXF Framework
+
+rest style (http binding / xml binding)
+----------
+The dataflow in rest style is:
+	obj-->xml message-->http req msg
+
+The following APIs support rest style:
+	JAX-RS API, SPRING with REST API, JAX-WS API, Apache CXF Framework
+
+Both client side stub as well as Server side skeleton does (de)serialization.
+In 'document' style messaging, the top level element becomes direct sub element of <soap:Body>.
+In 'rpc' style messaging, the method name becomes direct sub element of <soap:Body>.
+
+The document vs rpc styles influence:
+	1) XML Schema (.xsd) file
+	2) Generated soap message
+	3) WSDL file
+	4) Method signature
+
+Web Services tools
+------------------
+AXIS2
+  -wsdl2java
+  -java2wsdl
+
+JAX-RPC
+  -wscompile
+  -wsdeploy
+
+JAXB
+  -xjc
+  -schemagen
+
+JAX-WS
+  -wsimport
+  -wsgen
+
+The JAX-RPC compiler (wscompile) takes .wsdl and automatically generates:
+	1) Endpoint Interface (Mapped with <wsdl:portType>)
+	2) Stub class (which is inherited from above Endpoint Interface)
+	3) Service Interface (Mapped with <wsdl:service>)
+	4) Service Impl class (which is inherited from above service interface)
+
+
+Differences among Generated stub, Dynamic proxy and DII
+=======================================================
+Generated stub
+--------------
+1) The .wsdl file is required
+2) The 'wscompile' tool generates:
+	a) Endpoint Interface
+	b) Stub class
+	c) Service interface
+	d) Service Impl class
+3) Invoke specific getport method on generated service interface.
+4) The client code is very simple
+
+Dynamic proxy
+-------------
+1) The .wsdl file is required
+2) The 'wsimport' tool generates:
+	a) Endpoint Interface
+3) Invoke generic getPort() method on javax.xml.rpc.Service interface.
+4) The client code is moderate
+
+DII (Dynamic Invocation Interface)
+----------------------------------
+1) The .wsdl file is not required.
+2) The web services tool is not required since no wsdl doc.
+3) Call invoke() method on javax.xml.rpc.Call interface 
+4) The client code is very complex
+
+JAXB does:
+     1) Type mapping [Java/XML  or  XML/Java]
+     2) Binding [(Un)marshalling] at runtime
+
+In java there are 2 types of annotations:
+  1) Java annotations
+	-Added to Java source code
+	-Prefixed with '@'
+	 Ex: @Override
+	 
+  2) Binding annotations
+	-Added to Resource files (such as .xsd, .wsdl, etc)
+	-Wrapped in < >
+	 Ex: <jaxb:package/>
+
+Customize binding means adding either Java annotations to source code or Binding annotations to .xsd file.
+
+JAX-WS (or JAX-RS) delegates (un)marshalling to JAXB, which intern delegates validation to JAxP.
+
+
+JAX-RS
+======
+1) JAX-RS Specification
+	-SUN
+	-.pdf (JSR-311)
+	-Description
+
+2) JAX-RS API
+	-SUN
+	-Mostly contains interfaces, mostly contains annotation names and few classes
+	-javax.ws.rs package
+	-javax.ws.rs.core package
+	-javax.ws.rs.ext package
+
+3) JAX-RS Implementation
+	- Many thrird party vendors such as Apache, Sun, JBoss, etc 
+	- Have provided impl classes for all interfaces and annotation names in Jax-rs api.
+	- Apache CXF [Apache]
+	- Jersey     [sun]
+	- RESTEasy   [JBoss]
+	...
+
+The payload means body in http req msg is optional and depends on http method name i.e., 
+ 	- In case of GET method, the req msg must not contains body.
+	- In case of POST method, the req msg must contains body.
+
+The payload means body in http resp msg is optional and depends on http status code i.e., 
+ 	- In case of 204 status code, the resp msg without body.
+	- In case of 200 status code, the resp msg with body.
+
+Both http request header & http response header contains 'Content-Type' to represent payload format.
+The methods in both Response and ResponseBuilder classes help us to customize http response header with specific status, specific mime type, specific locale details and new header(s).
+The possible return types of resource method may be void, data class or Response but the prefered return type of the resource method is Response. 
+
+
+The wsdl2java tool takes .wsdl and generates:
+	1) Req & resp beans --without annotations
+	2) Endpoint interface i.e., business interface --without annotations
+	3) Skeleton class
+
+JAX-RPC1.0[2002] --> JAX-RPC1.1[2003] --> JAX-RPC2.0[2005]
+
+JAX-RPC1.X				  JAX-WS2.0
+==========				  ==========
+1) Supports only 'rpc' style.		  2) Supports both 'document' & 'rpc' styles
+2) Defines its own (De)Serialization	  2) Delegates (Un)Marshalling to jaxb
+mech
+...
+
+JAX-WS2.0 was renamed version of JAX-RPC2.0
+The predecessor of JAX-RPC2.0 was JAX-RPC1.x but not JAX-WS1.X
+
+JAX-RPC API
+JAX-WS	API
+Apache CXF Framework
+
+The wsimport generates both Javab annotated classes and Endpoint interface.
+Example:
+c:\>wsimport -s . http://localhost:9090/OrderProcessing/orderprocess?wsdl
+  	generates
+1) Java class with jaxb annotations 		[Order.java]
+2) Endpoint interface with jax-ws annotations	[OrderProcess.java]
+...
+
+		

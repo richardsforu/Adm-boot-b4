@@ -1,0 +1,52 @@
+Client code
+-----------
+1) Create object (ConcatRequest)
+
+client side stub w.r.t request
+------------------------------
+1) Serialize above client object to XML message [ConcatRequest --> XML Message]
+2) Adds above XML message to <soap:Body>
+3) The entire soap message becomes payload of HTTP Request message
+
+soap runtime env w.r.t request
+------------------------------
+1) receives above HTTP request msg
+2) extracts soap message from above http request message
+3) extract xml message from above soap message
+4) xml message is handed over to server side skeleton classes
+
+Server side Skeleton w.r.t request
+----------------------------------
+1) Deserializes XML message to object [XML Message --> ConcatRequest]
+2) Invokes business method & passes above deserialized obj as an arg
+3) wait for response object returned by method.
+4) converts received response object into XML message (Serialiation)
+5) The above XML message is handed over to soap runtime env
+
+soap runtime evn w.r.t response
+-------------------------------
+1) Adds XML message to soap message
+2) The above soap message is added to http response message
+
+client side stub w.r.t response
+-------------------------------
+1) Receives HTTP Response message
+2) Extract soap message from above http response
+3) Extract XML message from above soap message
+4) Deserializes XML message to java object [XML message --> ConcatResponse]
+
+Note: The client side stub as well as server side skeleton does both serialization and deserialization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

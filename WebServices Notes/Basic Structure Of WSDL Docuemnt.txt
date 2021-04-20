@@ -1,0 +1,67 @@
+Basic Structure Of WSDL
+=======================
+<wsdl:definitions>				- The root element
+	<wsdl:types>				- Defines XML Elements or Xml Types
+	<wsdl:message>				- Input message, Output message, Fault message
+	<wsdl:portType>				- Mapped with Endpoint Interface (i.e., Business Interface)
+		<wsdl:operation>		- Mapped with method name in above Endpoint Interface
+			<wsdl:input/>		- Refers above Input message
+			<wsdl:output/>		- Refers above Output message
+			<wsdl:fault>		- Refers above Fault message
+		</wsdl:operation>
+		...
+	</wsdl:portType>
+	<wsdl:binding>				- Message Format, Messaging Style, Encoding Style, Transport protocol details
+	<wsdl:service>				- Mapped with Service Interface
+</wsdl:definitions>
+----------------------------------------------------------------------------------------------
+
+public float div(int x, int y) throws A.E
+The method IN parameters are defined using Input message.
+The method return type is defined using Output messsage.
+Every exception type is defined using a separate Fault message.
+
+The document vs rpc styles influence all wsdl elements except <wsdl:service> element.
+
+
+Basic structure of <wsdl:binding>
+=================================
+<wsdl:binding>
+	<soap:binding style="doc | rpc"/>
+	<wsdl:operation>
+		<soap:operation style="doc | rpc"/>
+		<wsdl:input>
+			<soap:body/>
+		</wsdl:input>
+		<wsdl:output>
+			<soap:body/>
+		</wsdl:output>
+		<wsdl:fault>
+			<soap:fault/>
+		</wsdl:fault>
+	</wsdl:operation>
+	...
+</wsdl:binding>
+
+The <soap:bidning/>, <soap:operation/>, <soap:body/> and <soap:fault/> are protocol specific elements.
+The <wsdl:binding>, <wsdl:operation>, <wsdl:input>, <wsdl:output> and <wsdl:fault> are wsdl elements.
+
+1) The 'parameterOrder' attribute of <wsdl:operation> element is used to identify return type among out parameters.
+2) The 'parameterOrder' attr is an optional attribute.
+3) If it is used, then we must specify all part names from Input message.
+4) Specifying out parameter names is optional.
+5) If exactly one out parameter is unspecified then that becomes return type, otherwise the return type is void.
+
+Note: If 'parameterOrder' attr is not used with <wsdl:operation> element, which implied that all OUT parameters are unspecified.
+
+The <wsdl:binding>, <wsdl:operation>, <wsdl:input>, <wsdl:output>, <wsdl:fault> are wsdl elements.
+The <soap:binding>, <soap:operation>, <soap:body> are protocol specific elements.
+	   rpc						document
+	   ===						========
+<soap:body Yes	use="encoded | literal"			 Yes
+	   No	encodingStyle="soap encoding url"	 No
+	   Yes	namespace="targetnamespace"		 No
+	   Yes	parts="s1 s2" />		 	 No
+
+
+

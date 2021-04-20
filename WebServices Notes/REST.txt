@@ -1,0 +1,220 @@
+The author of the REST (It is also called as RESTFul Web Services) is Roy Fielding.
+
+The REST stands for REpresentational State Transfer.
+	-State means data
+	-REpresentational means formats (such as xml, json, yaml, html, etc)
+	-Transfer means carry data between consumer and provider using HTTP protocol
+
+In RESTFul web services data is more important than software.
+The RESTful Web services uses HTTP protocol completely including http methods, http status codes, etc. Hence the pre-requisite for REST is HTTP protocol.
+
+HTTP Protocol
+=============
+The http protocol has:
+	1) Http request message  (Prepared by consumer)
+	2) Http response message (Prepared by provider)
+
+Http Request Message
+--------------------
+It is the responsibility of consumer means client application to prepare and send http request message as given below:
+POST /SpringREST/customers HTTP/1.1
+Accept: application/xml
+Content-Type: application/xml
+Content-Length: 196
+User-Agent: Java/1.7.0_25
+Host: 127.0.0.1:7000
+Connection: keep-alive
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+   <customer>    
+      <cid>0</cid>    
+      <cname>Ramesh</cname>    
+      <email>ramesh@java2aspire.com</email>    
+      <mobile>7799108899</mobile>
+   </customer>
+
+The Http request message always starts with http method name such as GET, POST, PUT, DELETE, HEAD, etc.
+It is the responsibility of consumer to prepare and send http request message with appropriate http method name depending on operation:
+	-The GET method is used to perform READ operation.
+	-The POST method is used to perform INSERT operation.
+	-The PUT method is used to perform UPDATE operation. 
+	-The DELETE method is used to perform DELETE operation.
+
+The payload means body in http request message is optional and depends on http method name i.e.,
+	-In case of GET method, the http request message without body
+	-In case of POST method, the http request message with body
+
+The 'Content-Type' header name in http request message is used to represent payload format in http request message.
+The 'Accept' header name in http request message is used to represent expected payload format in http response message.
+
+Http Response Message
+---------------------
+It is the responsibility of business component (developed by resource provider) to prepare and send http response message as given below:
+HTTP/1.1 200 OK
+Content-Type: application/xml
+Server: Apache-Coyote/1.1
+Transfer-Encoding: chunked
+Date: Mon, 10 Nov 2014 09:45:34 GMT
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+   <customer>
+      <cid>1</cid>
+      <cname>Ramesh</cname>
+      <email>ramesh@java2aspire.com</email>
+      <mobile>7799108899</mobile>
+   </customer>
+
+The Http response message contains any one of the http status code ranges between 100 and 599:
+	Informational 	  : 1xx
+	Successfull   	  : 2xx
+	Redirectional     : 3xx
+	Client side error : 4xx
+	Server side error : 5xx
+
+The payload means body in http response message is optional and depends on status code i.e.,
+	-In case of 204 status code, the http response message without body
+	-In case of 200 status code, the http response message with body
+
+The 'Content-Type' header name in http response message is used to represent payload format in http response message.
+Conclusion:
+   1) Both http request header and http response header have 'Content-Type' to represent their payload formats.
+   2) Only http request header additionally contains 'Accept' to represent expected payload format in http response message.
+   3) The 'Accept' in request header and 'Content-Type' in response header must be same then only client will accept and process http response message.
+
+Many third party vendros have provided APIs for REST:
+ 	-JAX-RS API		[from SUN]
+	-SPRING with REST API	[from SPRING]
+	-Apache wink		[from APACHE]
+	 ...
+
+There are 4 architectural principles in REST:
+	1) Addresibility
+	2) Uniform and Constraint interface
+	3) Representation oriented
+	4) Communicate statelessly
+Note: Above 4 principles are incorporated means associated with every resource ( means business comp) class.
+
+Addresibility
+-------------
+This principle is used to identify/select one resource class among multiple resource classes.
+Example:
+@Controller
+@RequestMapping("/customers")
+public class NewCustomerController{ //resource class
+
+}
+
+@RequestMapping("/emps")
+public class NewEmployeeController{ //resource class
+
+}
+
+Uniform and Constraint interface
+--------------------------------
+This principle is used to identify resource method among resource methods.
+@Controller
+@RequestMapping("/customers")
+public class NewCustomerController{
+	//@RequestMapping(method=RequestMethod.POST)
+	public void insertCustomer(…){ //resource method
+	
+	}
+	@RequestMapping(method=RequestMethod.GET)
+	public Customer readCustomer(…){ //resource method
+		...
+	}
+	@RequestMapping(method=RequestMethod.PUT)
+	public void modifyCustomer(…){ //resource method
+		...
+	}
+	@RequestMapping(method=RequestMethod.DELETE)
+	public void removeCustomer(…){	//resource method
+		...
+	}
+	…
+}
+
+Representation Oriented
+-----------------------
+Representation means formats such as xml, json, html, etc depending on client preference i.e.,
+	-Both java and .net clients prefer to represent data in xml format.
+	-AJAX clients prefer to represent data in json format.
+	-Web browsers prefer to represent data in html format.
+ 	...
+Conclusion: Diff client applications prefer to represent their data in diff formats.
+
+The 'Content-Type' header name in http request message is used to represent payload format in http request message.
+The 'Accept' header name in http request message is used to represent expected payload format in http response message.
+Example:
+@Controller
+@RequestMapping("/customers")
+public class NewCustomerController{
+	//@RequestMapping(method=RequestMethod.POST, headers={"Content-Type=application/xml"})
+	@RequestMapping(method=RequestMethod.POST, consumes={"application/xml"})
+	public void insertCustomer(Customer c){ //resource method
+	
+	}
+	//@RequestMapping(method=RequestMethod.GET, headers={"Accept=application/xml"}, value="/{id}")
+	@RequestMapping(method=RequestMethod.GET, produces={"application/xml"})
+	public Customer readCustomer(@PathVariable("id") int id){ //resource method
+		...
+	}
+	…
+}
+
+HttpMessageConverter
+====================
+Generally resource methods take an object and return an object.
+But different consumers will send and receive data in different formats such as xml, json, yaml, html, etc.
+Hence Spring API provides different message converters such as Jaxb2RootElementHttpMessageConverter, MappingJacksonHttpMessageConverter, etc to convert between object and client convinience formats such as xml, json, yaml, html, etc.
+The @RequestBody and @ResponseBody annotations are used to select appropriate http message converter based on 'Content-Type' or 'Accept' headers in http request message.
+Example:
+@Controller
+@RequestMapping("/customers")
+public class NewCustomerController{
+	//@RequestMapping(method=RequestMethod.POST, headers={"Content-Type=application/xml"})
+	@RequestMapping(method=RequestMethod.POST, consumes={"application/xml"})
+	public void insertCustomer(@RequestBody Customer c){ //resource method
+	
+	}
+	//@RequestMapping(method=RequestMethod.GET, headers={"Accept=application/xml"})
+	@RequestMapping(method=RequestMethod.GET, produces={"application/xml"})
+	public @ResponseBody Customer readCustomer(…){ //resource method
+		...
+	        return cust;
+	}
+	…
+}
+
+Comparision between JAX-RS API annotations and SPRING with REST API annotations:
+   JAX-RS				SPRING with REST
+   ======				================
+   @Path				@RequestMapping
+   @POST				RequestMethod.POST
+   @GET					RequestMethod.GET		
+   @Consumes("application/xml")		consumes={"application/xml"}
+   @Produces("application/xml")		produces={"application/xml"}
+   @PathParam				@PathVariable
+					@RequestBody
+					@ResponseBody
+
+We can test RESTFul applications using diff approaches:
+1) Writing JUnit test cases
+2) Add Postman plug-in in chrome browser
+3) Using SOAP UI
+4) Using RestTemplate from Spring API
+...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
