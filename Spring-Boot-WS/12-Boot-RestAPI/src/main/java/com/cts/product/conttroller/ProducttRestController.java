@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/products")
 public class ProducttRestController {
 	
-	@GetMapping
+	@GetMapping( )
 	public String f1() {
 		return "GET method from speing side...";
 	}
