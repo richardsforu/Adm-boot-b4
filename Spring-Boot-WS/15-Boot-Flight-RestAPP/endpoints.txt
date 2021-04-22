@@ -1,0 +1,28 @@
+Booking a flight id 9 for 3 passengers
+http://localhost:8080/api/pss/9/3
+
+Method Type: POST
+
+
+{
+    "firstName":"Praveen",
+    "lastName":"reddy",
+    "gender":"Male",
+    "emailAddress":"abc@abc.com",
+    "mobileNumber":3847394739,
+    "coPassengers":
+    [
+        {
+            "firstName":"Priya",
+            "lastName":"Kumari",
+            "gender":"Female"
+        },
+        {
+            "firstName":"James",
+            "lastName":"Giedic",
+            "gender":"Male"
+        }
+    ]
+}
+
+------------------------------------------------------------
