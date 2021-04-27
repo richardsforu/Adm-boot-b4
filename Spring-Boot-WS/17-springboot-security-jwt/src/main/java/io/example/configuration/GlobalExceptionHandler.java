@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,6 +26,7 @@ import java.util.Map;
 import static java.util.Optional.ofNullable;
 
 @ControllerAdvice
+//@Profile("prod")
 public class GlobalExceptionHandler {
 
     private final Logger logger = LogManager.getLogger();
